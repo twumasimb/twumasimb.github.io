@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Adaptive Prompting in In-Context Learning | Twumasi Mensah-Boateng</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #111;
+            --link-color: #2563eb;
+            --link-hover: #1d4ed8;
+            --border-color: #e5e7eb;
+            --text-color: #374151;
+            --light-bg: #f9fafb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Navigation */
+        .nav {
+            margin-bottom: 3rem;
+        }
+
+        .nav a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Article Header */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Paper Info Box */
+        .paper-info {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-left: 4px solid var(--link-color);
+        }
+
+        .paper-info h3 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .paper-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .paper-info strong {
+            color: var(--primary-color);
+        }
+
+        .paper-links {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .paper-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .paper-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Article Content */
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 2.5rem 0 1rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 2rem 0 1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .article-content a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content code {
+            background: var(--light-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .article-content pre {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid var(--link-color);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="../index.html">← Back to Home</a>
+        </nav>
+
+        <!-- Article Header -->
+        <header class="article-header">
+            <h1 class="article-title">Understanding Adaptive Prompting in In-Context Learning</h1>
+            <div class="article-meta">
+                <span>📅 January 2025</span>
+                <span>📚 Paper Discussion</span>
+                <span>⏱️ 8 min read</span>
+            </div>
+        </header>
+
+        <!-- Paper Info -->
+        <div class="paper-info">
+            <h3>📄 Paper Information</h3>
+            <p><strong>Title:</strong> The Power of Adaptation: Boosting In-Context Learning through Adaptive Prompting</p>
+            <p><strong>Authors:</strong> Shuzhang Cai, Twumasi Mensah-Boateng, Xander Kuksov, Jing Yuan, Shaojie Tang</p>
+            <p><strong>Conference:</strong> The 38th Canadian Conference on Artificial Intelligence, 2025</p>
+            <div class="paper-links">
+                <a href="https://caiac.pubpub.org/pub/83y1orl0/release/1" target="_blank">📑 Read Paper</a>
+            </div>
+        </div>
+
+        <!-- Article Content -->
+        <article class="article-content">
+            <h2>Introduction</h2>
+            <p>In-context learning (ICL) has emerged as a powerful capability of large language models (LLMs), allowing them to adapt to new tasks using only a few examples provided in the prompt. However, the performance of ICL is highly sensitive to the selection and ordering of these examples. Our recent work explores how adaptive prompting can significantly enhance ICL performance.</p>
+
+            <h2>The Challenge</h2>
+            <p>Traditional approaches to in-context learning face several challenges:</p>
+            <ul>
+                <li><strong>Example Selection:</strong> Which examples should be included in the prompt?</li>
+                <li><strong>Example Ordering:</strong> How should these examples be arranged?</li>
+                <li><strong>Prompt Engineering:</strong> How can we systematically improve prompts without manual trial and error?</li>
+            </ul>
+
+            <h2>Our Approach: Adaptive Prompting</h2>
+            <p>We introduce an adaptive prompting framework that dynamically adjusts the prompt based on the specific input being processed. The key insight is that different inputs may benefit from different sets of examples and orderings.</p>
+
+            <h3>Key Contributions</h3>
+            <p>Our work makes several important contributions:</p>
+            <ol>
+                <li>A theoretical framework for understanding the impact of example selection on ICL performance</li>
+                <li>An efficient algorithm for adaptive prompt construction</li>
+                <li>Empirical validation across multiple benchmarks showing significant improvements</li>
+            </ol>
+
+            <h2>Results</h2>
+            <p>Our experiments demonstrate that adaptive prompting consistently outperforms static prompting strategies across various tasks and model sizes. The improvements are particularly notable in:</p>
+            <ul>
+                <li>Classification tasks with diverse label distributions</li>
+                <li>Scenarios with limited example availability</li>
+                <li>Tasks requiring nuanced understanding of context</li>
+            </ul>
+
+            <h2>Implications</h2>
+            <p>This work has several important implications for the practical deployment of LLMs:</p>
+            <ul>
+                <li><strong>Efficiency:</strong> Better performance with fewer examples means reduced API costs and faster inference</li>
+                <li><strong>Robustness:</strong> Adaptive selection makes ICL more reliable across diverse inputs</li>
+                <li><strong>Accessibility:</strong> Reduces the need for expert prompt engineering</li>
+            </ul>
+
+            <h2>Future Directions</h2>
+            <p>We're excited about several directions for future work, including:</p>
+            <ul>
+                <li>Extending adaptive prompting to multi-modal settings</li>
+                <li>Developing theoretical guarantees for adaptive selection strategies</li>
+                <li>Exploring connections to active learning and curriculum learning</li>
+            </ul>
+
+            <h2>Conclusion</h2>
+            <p>Adaptive prompting represents a significant step forward in making in-context learning more effective and practical. By dynamically tailoring prompts to specific inputs, we can unlock the full potential of LLMs while reducing the burden of manual prompt engineering.</p>
+
+            <p>If you're interested in learning more, please check out our <a href="https://caiac.pubpub.org/pub/83y1orl0/release/1" target="_blank">full paper</a> or feel free to reach out with questions!</p>
+        </article>
+
+        <!-- Footer -->
+        <footer>
+            <p><a href="../index.html">← Back to Home</a></p>
+            <p style="margin-top: 1rem;">&copy; 2025 Twumasi Mensah-Boateng</p>
+        </footer>
+    </div>
+</body>
+</html>
